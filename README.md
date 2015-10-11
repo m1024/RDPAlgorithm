@@ -1,1 +1,1 @@
-# RDPAlgorithm
+# Ramer–Douglas–Peucker algorithm
