@@ -23,28 +23,35 @@ namespace RDPalgorithm
 
         private void panel_Paint(object sender, PaintEventArgs e)
         {
-            var ownerForm = (RDPForm) this.Owner;
-            int max = 0, min = int.MaxValue;
-            for (int i = 0; i < ownerForm.pRez.Length; i++)
+            try
             {
-                if (ownerForm.pRez[i].Y > max) max = ownerForm.pRez[i].Y;
-                if (ownerForm.pRez[i].Y < min) min = ownerForm.pRez[i].Y;
-            }
-
-            float k = (float) panel.Height/(max - min);
-
-            for (int i = beginGraph + 1;
-                (i < ownerForm.pRez.Length) && (ownerForm.pRez[i].X <= ownerForm.pRez[beginGraph].X + panel.Width);
-                i++)
-            {
-                if ((i < ownerForm.pRez.Length) && (i > 0))
+                var ownerForm = (RDPForm)this.Owner;
+                int max = 0, min = int.MaxValue;
+                for (int i = 0; i < ownerForm.pRez.Length; i++)
                 {
-                    var onePoint = new Point(ownerForm.pRez[i - 1].X - ownerForm.pRez[beginGraph].X,
-                        panel.Bottom - (int) (ownerForm.pRez[i - 1].Y*k) - panel.Height/2);
-                    var twoPoint = new Point(ownerForm.pRez[i].X - ownerForm.pRez[beginGraph].X,
-                        panel.Bottom - (int) (ownerForm.pRez[i].Y*k) - panel.Height/2);
-                    DrawLine(onePoint, twoPoint, e);
+                    if (ownerForm.pRez[i].Y > max) max = ownerForm.pRez[i].Y;
+                    if (ownerForm.pRez[i].Y < min) min = ownerForm.pRez[i].Y;
                 }
+
+                float k = (float)panel.Height / (max - min);
+
+                for (int i = beginGraph + 1;
+                    (i < ownerForm.pRez.Length) && (ownerForm.pRez[i].X <= ownerForm.pRez[beginGraph].X + panel.Width);
+                    i++)
+                {
+                    if ((i < ownerForm.pRez.Length) && (i > 0))
+                    {
+                        var onePoint = new Point(ownerForm.pRez[i - 1].X - ownerForm.pRez[beginGraph].X,
+                            panel.Bottom - (int)(ownerForm.pRez[i - 1].Y * k) - panel.Height / 2);
+                        var twoPoint = new Point(ownerForm.pRez[i].X - ownerForm.pRez[beginGraph].X,
+                            panel.Bottom - (int)(ownerForm.pRez[i].Y * k) - panel.Height / 2);
+                        DrawLine(onePoint, twoPoint, e);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 

@@ -122,6 +122,7 @@
             this.textBoxEpsilon.Name = "textBoxEpsilon";
             this.textBoxEpsilon.Size = new System.Drawing.Size(52, 20);
             this.textBoxEpsilon.TabIndex = 9;
+            this.textBoxEpsilon.Text = "1";
             // 
             // label5
             // 
@@ -138,6 +139,7 @@
             this.textBoxBlockSize.Name = "textBoxBlockSize";
             this.textBoxBlockSize.Size = new System.Drawing.Size(100, 20);
             this.textBoxBlockSize.TabIndex = 11;
+            this.textBoxBlockSize.Text = "1000";
             // 
             // richTextBoxConvertTime
             // 

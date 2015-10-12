@@ -9,3 +9,14 @@ c:\users\notebook\documents\visual studio 2013\Projects\RDPalgorithm\RDPalgorith
 c:\users\notebook\documents\visual studio 2013\Projects\RDPalgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.csproj.GenerateResource.Cache
 c:\users\notebook\documents\visual studio 2013\Projects\RDPalgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.exe
 c:\users\notebook\documents\visual studio 2013\Projects\RDPalgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.pdb
+F:\RDPAlgorithm\RDPalgorithm\bin\Debug\RDPalgorithm.exe.config
+F:\RDPAlgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.exe
+F:\RDPAlgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.pdb
+F:\RDPAlgorithm\RDPalgorithm\bin\Debug\RDPalgorithm.exe
+F:\RDPAlgorithm\RDPalgorithm\bin\Debug\RDPalgorithm.pdb
+F:\RDPAlgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.csprojResolveAssemblyReference.cache
+F:\RDPAlgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.OriginalGraph.resources
+F:\RDPAlgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.Properties.Resources.resources
+F:\RDPAlgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.RDPForm.resources
+F:\RDPAlgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.SmoothedGraph.resources
+F:\RDPAlgorithm\RDPalgorithm\obj\Debug\RDPalgorithm.csproj.GenerateResource.Cache
