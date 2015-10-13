@@ -6,12 +6,12 @@ namespace RDPalgorithm
 {
     public partial class SmoothedGraph : Form
     {
-        private int beginGraph { get; set; }
+        private int BeginGraph { get; set; }
 
         public SmoothedGraph()
         {
             InitializeComponent();
-            beginGraph = 0;
+            BeginGraph = 0;
         }
 
         private void DrawLine(Point onePoint, Point twoPoint, PaintEventArgs e)
@@ -25,26 +25,26 @@ namespace RDPalgorithm
         {
             try
             {
-                var ownerForm = (RDPForm)this.Owner;
+                var ownerForm = (RDPForm) this.Owner;
                 int max = 0, min = int.MaxValue;
-                for (int i = 0; i < ownerForm.pRez.Length; i++)
+                for (int i = 0; i < ownerForm.PRez.Length; i++)
                 {
-                    if (ownerForm.pRez[i].Y > max) max = ownerForm.pRez[i].Y;
-                    if (ownerForm.pRez[i].Y < min) min = ownerForm.pRez[i].Y;
+                    if (ownerForm.PRez[i].Y > max) max = ownerForm.PRez[i].Y;
+                    if (ownerForm.PRez[i].Y < min) min = ownerForm.PRez[i].Y;
                 }
 
-                float k = (float)panel.Height / (max - min);
+                float k = (float) panel.Height/(max - min);
 
-                for (int i = beginGraph + 1;
-                    (i < ownerForm.pRez.Length) && (ownerForm.pRez[i].X <= ownerForm.pRez[beginGraph].X + panel.Width);
+                for (int i = BeginGraph + 1;
+                    (i < ownerForm.PRez.Length) && (ownerForm.PRez[i].X <= ownerForm.PRez[BeginGraph].X + panel.Width);
                     i++)
                 {
-                    if ((i < ownerForm.pRez.Length) && (i > 0))
+                    if ((i < ownerForm.PRez.Length) && (i > 0))
                     {
-                        var onePoint = new Point(ownerForm.pRez[i - 1].X - ownerForm.pRez[beginGraph].X,
-                            panel.Bottom - (int)(ownerForm.pRez[i - 1].Y * k) - panel.Height / 2);
-                        var twoPoint = new Point(ownerForm.pRez[i].X - ownerForm.pRez[beginGraph].X,
-                            panel.Bottom - (int)(ownerForm.pRez[i].Y * k) - panel.Height / 2);
+                        var onePoint = new Point(ownerForm.PRez[i - 1].X - ownerForm.PRez[BeginGraph].X,
+                            panel.Bottom - (int) (ownerForm.PRez[i - 1].Y*k) - panel.Height/2);
+                        var twoPoint = new Point(ownerForm.PRez[i].X - ownerForm.PRez[BeginGraph].X,
+                            panel.Bottom - (int) (ownerForm.PRez[i].Y*k) - panel.Height/2);
                         DrawLine(onePoint, twoPoint, e);
                     }
                 }
@@ -59,11 +59,11 @@ namespace RDPalgorithm
         {
             var ownerForm = (RDPForm) this.Owner;
 
-            for (int i = beginGraph; i >= 0; i--)
+            for (int i = BeginGraph; i >= 0; i--)
             {
-                if (ownerForm.pRez[i].X <= ownerForm.pRez[beginGraph].X - panel.Width)
+                if (ownerForm.PRez[i].X <= ownerForm.PRez[BeginGraph].X - panel.Width)
                 {
-                    beginGraph = i + 1;
+                    BeginGraph = i + 1;
                     break;
                 }
             }
@@ -75,12 +75,12 @@ namespace RDPalgorithm
         {
             var ownerForm = (RDPForm) this.Owner;
 
-            for (int i = 0; i < ownerForm.pRez.Length; i++)
+            for (int i = 0; i < ownerForm.PRez.Length; i++)
             {
-                if (ownerForm.pRez[i].X >= ownerForm.pRez[beginGraph].X + panel.Width)
+                if (ownerForm.PRez[i].X >= ownerForm.PRez[BeginGraph].X + panel.Width)
                 {
-                    if (i != ownerForm.pRez.Length - 1)
-                        beginGraph = i;
+                    if (i != ownerForm.PRez.Length - 1)
+                        BeginGraph = i;
                     break;
                 }
             }

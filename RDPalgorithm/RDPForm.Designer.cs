@@ -29,21 +29,23 @@
         private void InitializeComponent()
         {
             this.buttonOpenFile = new System.Windows.Forms.Button();
-            this.textBoxSourseSequence = new System.Windows.Forms.TextBox();
+            this.textBoxSourseSize = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxFilePath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBoxSmoothedSequence = new System.Windows.Forms.TextBox();
+            this.textBoxSmoothedSize = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxEpsilon = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxBlockSize = new System.Windows.Forms.TextBox();
-            this.richTextBoxConvertTime = new System.Windows.Forms.RichTextBox();
             this.buttonConvert = new System.Windows.Forms.Button();
             this.buttonOriginalGraph = new System.Windows.Forms.Button();
             this.buttonSmoothedGraph = new System.Windows.Forms.Button();
             this.openFile = new System.Windows.Forms.OpenFileDialog();
+            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -56,13 +58,13 @@
             this.buttonOpenFile.UseVisualStyleBackColor = true;
             this.buttonOpenFile.Click += new System.EventHandler(this.buttonOpenFile_Click);
             // 
-            // textBoxSourseSequence
+            // textBoxSourseSize
             // 
-            this.textBoxSourseSequence.Location = new System.Drawing.Point(246, 101);
-            this.textBoxSourseSequence.Name = "textBoxSourseSequence";
-            this.textBoxSourseSequence.ReadOnly = true;
-            this.textBoxSourseSequence.Size = new System.Drawing.Size(100, 20);
-            this.textBoxSourseSequence.TabIndex = 1;
+            this.textBoxSourseSize.Location = new System.Drawing.Point(246, 101);
+            this.textBoxSourseSize.Name = "textBoxSourseSize";
+            this.textBoxSourseSize.ReadOnly = true;
+            this.textBoxSourseSize.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSourseSize.TabIndex = 1;
             // 
             // label1
             // 
@@ -90,13 +92,13 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Упрощенная последовательность, байт";
             // 
-            // textBoxSmoothedSequence
+            // textBoxSmoothedSize
             // 
-            this.textBoxSmoothedSequence.Location = new System.Drawing.Point(246, 141);
-            this.textBoxSmoothedSequence.Name = "textBoxSmoothedSequence";
-            this.textBoxSmoothedSequence.ReadOnly = true;
-            this.textBoxSmoothedSequence.Size = new System.Drawing.Size(100, 20);
-            this.textBoxSmoothedSequence.TabIndex = 5;
+            this.textBoxSmoothedSize.Location = new System.Drawing.Point(246, 141);
+            this.textBoxSmoothedSize.Name = "textBoxSmoothedSize";
+            this.textBoxSmoothedSize.ReadOnly = true;
+            this.textBoxSmoothedSize.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSmoothedSize.TabIndex = 5;
             // 
             // label3
             // 
@@ -141,18 +143,9 @@
             this.textBoxBlockSize.TabIndex = 11;
             this.textBoxBlockSize.Text = "1000";
             // 
-            // richTextBoxConvertTime
-            // 
-            this.richTextBoxConvertTime.Location = new System.Drawing.Point(185, 177);
-            this.richTextBoxConvertTime.Name = "richTextBoxConvertTime";
-            this.richTextBoxConvertTime.ReadOnly = true;
-            this.richTextBoxConvertTime.Size = new System.Drawing.Size(161, 93);
-            this.richTextBoxConvertTime.TabIndex = 12;
-            this.richTextBoxConvertTime.Text = "";
-            // 
             // buttonConvert
             // 
-            this.buttonConvert.Location = new System.Drawing.Point(35, 220);
+            this.buttonConvert.Location = new System.Drawing.Point(116, 206);
             this.buttonConvert.Name = "buttonConvert";
             this.buttonConvert.Size = new System.Drawing.Size(124, 35);
             this.buttonConvert.TabIndex = 13;
@@ -180,33 +173,47 @@
             this.buttonSmoothedGraph.UseVisualStyleBackColor = true;
             this.buttonSmoothedGraph.Click += new System.EventHandler(this.buttonSmoothedGraph_Click);
             // 
-            // openFile
+            // dataGridView
             // 
-            this.openFile.FileName = "openFile";
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.Location = new System.Drawing.Point(370, 17);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
+            this.dataGridView.Size = new System.Drawing.Size(261, 284);
+            this.dataGridView.TabIndex = 16;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(15, 252);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(331, 10);
+            this.progressBar.TabIndex = 17;
             // 
             // RDPForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(364, 316);
+            this.ClientSize = new System.Drawing.Size(648, 316);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.buttonSmoothedGraph);
             this.Controls.Add(this.buttonOriginalGraph);
             this.Controls.Add(this.buttonConvert);
-            this.Controls.Add(this.richTextBoxConvertTime);
             this.Controls.Add(this.textBoxBlockSize);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxEpsilon);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBoxSmoothedSequence);
+            this.Controls.Add(this.textBoxSmoothedSize);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxFilePath);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBoxSourseSequence);
+            this.Controls.Add(this.textBoxSourseSize);
             this.Controls.Add(this.buttonOpenFile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "RDPForm";
             this.Text = "Ramer-Douglas-Peucker algorithm";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -215,21 +222,22 @@
         #endregion
 
         private System.Windows.Forms.Button buttonOpenFile;
-        private System.Windows.Forms.TextBox textBoxSourseSequence;
+        private System.Windows.Forms.TextBox textBoxSourseSize;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxFilePath;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBoxSmoothedSequence;
+        private System.Windows.Forms.TextBox textBoxSmoothedSize;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxEpsilon;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxBlockSize;
-        private System.Windows.Forms.RichTextBox richTextBoxConvertTime;
         private System.Windows.Forms.Button buttonConvert;
         private System.Windows.Forms.Button buttonOriginalGraph;
         private System.Windows.Forms.Button buttonSmoothedGraph;
         private System.Windows.Forms.OpenFileDialog openFile;
+        private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 

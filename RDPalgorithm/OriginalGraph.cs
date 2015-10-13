@@ -7,15 +7,15 @@ namespace RDPalgorithm
 {
     public partial class OriginalGraph : Form
     {
-        private int beginGraph { get; set; }
+        private int BeginGraph { get; set; }
 
-        private int endGraph { get; set; }
+        private int EndGraph { get; set; }
 
         public OriginalGraph()
         {
             InitializeComponent();
-            beginGraph = 0;
-            endGraph = beginGraph + panel.Width;
+            BeginGraph = 0;
+            EndGraph = BeginGraph + panel.Width;
         }
 
         private void DrawLine(Point onePoint, Point twoPoint, PaintEventArgs e)
@@ -32,13 +32,13 @@ namespace RDPalgorithm
 
             float k = (float) panel.Height/(sequence.Max() - sequence.Min());
 
-            for (int i = beginGraph + 1; i < endGraph; i++)
+            for (int i = BeginGraph + 1; i < EndGraph; i++)
             {
                 if (i < sequence.Length && i > 0)
                 {
-                    var onePoint = new Point(i - beginGraph - 1,
+                    var onePoint = new Point(i - BeginGraph - 1,
                         panel.Bottom - (int) (sequence[i - 1]*k) - panel.Height/2);
-                    var twoPoint = new Point(i - beginGraph, panel.Bottom - (int) (sequence[i]*k) - panel.Height/2);
+                    var twoPoint = new Point(i - BeginGraph, panel.Bottom - (int) (sequence[i]*k) - panel.Height/2);
                     DrawLine(onePoint, twoPoint, e);
                 }
             }
@@ -46,15 +46,15 @@ namespace RDPalgorithm
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            beginGraph += panel.Width;
-            endGraph += panel.Width;
+            BeginGraph += panel.Width;
+            EndGraph += panel.Width;
             panel.Refresh();
         }
 
         private void buttonPrevious_Click(object sender, EventArgs e)
         {
-            beginGraph -= panel.Width;
-            endGraph -= panel.Width;
+            BeginGraph -= panel.Width;
+            EndGraph -= panel.Width;
             panel.Refresh();
         }
     }

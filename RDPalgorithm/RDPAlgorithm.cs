@@ -4,11 +4,15 @@ namespace RDPalgorithm
 {
     public struct MyPoint
     {
-        public int X;
-        public int Y;
+        public int X { get; set; }
+        public short Y { get; set; }
     }
+
     public static class RDPAlgorithm
     {
+        /// <summary>
+        /// Функция рассчета расстояния от точки до прямой, задаваемой двумя точками
+        /// </summary>
         private static double PerpendicularDistance(MyPoint point, MyPoint start, MyPoint end)
         {
             if (start.X == end.X && start.Y == end.Y)
@@ -19,6 +23,15 @@ namespace RDPalgorithm
             return n/d;
         }
 
+
+        /// <summary>
+        /// Алгоритм Рамера — Дугласа — Пекера, для уменьшения точек кривой
+        /// </summary>
+        /// <param name="pointList">Массив точек, задающий кривую</param>
+        /// <param name="startInd">Индекс начала кривой</param>
+        /// <param name="endInd">Индекс конца кривой</param>
+        /// <param name="epsilon">Точность</param>
+        /// <returns></returns>
         public static MyPoint[] DouglasPeucker(MyPoint[] pointList, int startInd, int endInd, float epsilon)
         {
             //Находим точку с максимальным расстоянием от прямой между первой и последней точками набора
