@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -11,7 +12,11 @@ namespace RDPalgorithm
     public struct Statistic
     {
         public TimeSpan Time { get; set; }
+        public int BlockSourseSize { get; set; }
+        public int BlockRezultLength { get; set; }
         public int BlockRezultSize { get; set; }
+        public ulong Additions { get; set; }
+        public ulong Multiplications { get; set; }
         public float СompressionRatio { get; set; }
     }
 
@@ -45,10 +50,13 @@ namespace RDPalgorithm
 
             for (int i = 1; i < PRez.Length; i++)
             {
+                RDPAlgorithm.Additions += 3;
                 newPRrez[i].DeltaX = (byte) (PRez[i].X - PRez[i - 1].X);
                 newPRrez[i].Y = PRez[i].Y;
             }
-            textBoxSmoothedSize.Text = (newPRrez.Length*3).ToString();
+            textBoxSmoothedSize.Text = String.Format("{0:0,0}", (newPRrez.Length*3));
+            textBoxAdditions.Text = String.Format("{0:0,0}", RDPAlgorithm.Additions);
+            textBoxMultiplications.Text = String.Format("{0:0,0}", RDPAlgorithm.Multiplications);
         }
 
         /// <summary>
@@ -78,7 +86,7 @@ namespace RDPalgorithm
             for (int i = 0; i < numbersInt.Length; i++)
                 numbersInt[i] = (System.Convert.ToInt16(numDoublesList.ElementAt(i)*k));
 
-            textBoxSourseSize.Text = (numbersInt.Length*2).ToString();
+            textBoxSourseSize.Text = String.Format("{0:0,0}", numbersInt.Length*2);
             return numbersInt;
         }
 
@@ -87,6 +95,9 @@ namespace RDPalgorithm
         /// </summary>
         private void Convert()
         {
+            RDPAlgorithm.Additions = 0;
+            RDPAlgorithm.Multiplications = 0;
+
             short[] originalSequence = ReadAndPrepare();
             MyPoint[] points = new MyPoint[originalSequence.Length];
 
@@ -106,19 +117,27 @@ namespace RDPalgorithm
             for (int i = 0; i < points.Length; i += blockSize)
             {
                 System.Diagnostics.Stopwatch swatch = new System.Diagnostics.Stopwatch(); // создаем объект
+                Statistic blockStat = new Statistic();
+                blockStat.Additions = RDPAlgorithm.Additions;
+                blockStat.Multiplications = RDPAlgorithm.Multiplications;
                 swatch.Start(); // старт
 
                 smoothSequence.Add(RDPAlgorithm.DouglasPeucker(points, i,
                     (i + blockSize < points.Length) ? i + blockSize : points.Length - 1,
                     (textBoxEpsilon.Text == "") ? 1 : float.Parse(textBoxEpsilon.Text)));
 
-                smooothSeqLength += smoothSequence.ElementAt(j++).Length;
+                smooothSeqLength += smoothSequence.ElementAt(j++).Length - 1;
+                    //-1 чтобы убрать последний элемент, т.к. он будет началом следующего блока
 
                 swatch.Stop(); // стоп
 
-                Statistic blockStat = new Statistic();
+                //сохраняем статситку
                 blockStat.Time = swatch.Elapsed;
-                blockStat.BlockRezultSize = smoothSequence.ElementAt(i/blockSize).Length;
+                blockStat.BlockRezultLength = smoothSequence.ElementAt(i/blockSize).Length;
+                blockStat.BlockRezultSize = blockStat.BlockRezultLength*3;
+                blockStat.BlockSourseSize = blockSize*2;
+                blockStat.Additions = RDPAlgorithm.Additions - blockStat.Additions;
+                blockStat.Multiplications = RDPAlgorithm.Multiplications - blockStat.Multiplications;
                 blockStat.СompressionRatio =
                     (float) Math.Round(blockSize/(smoothSequence.ElementAt(i/blockSize).Length*1.5), 3);
 
@@ -129,37 +148,35 @@ namespace RDPalgorithm
             progressBar.Value = 0;
             dataGridView.DataSource = stat;
             dataGridView.Columns[0].HeaderText = @"Время преобразования";
-            dataGridView.Columns[1].HeaderText = @"Длина блока";
-            dataGridView.Columns[2].HeaderText = @"Коэф. сжатия";
+            dataGridView.Columns[1].HeaderText = @"Размер исходного блока, байт";
+            dataGridView.Columns[2].HeaderText = @"Длина сжатого блока";
+            dataGridView.Columns[3].HeaderText = @"Размер сжатого блока, байт";
+            dataGridView.Columns[4].HeaderText = @"Слож ений";
+            dataGridView.Columns[5].HeaderText = @"Умнож ений";
+            dataGridView.Columns[6].HeaderText = @"Коэф. сжатия";
             dataGridView.Columns[0].Width = 100;
-            dataGridView.Columns[1].Width = 50;
-            dataGridView.Columns[2].Width = 50;
+            dataGridView.RowHeadersWidth = 60;
+            for (int i = 1; i < 7; i++)
+                dataGridView.Columns[i].Width = 55;
+            for (int i = 0; i < stat.Count; i++)
+                dataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
 
-            PRez = new MyPoint[smooothSeqLength];
+            PRez = new MyPoint[smooothSeqLength + 1];
             j = 0;
             foreach (var block in smoothSequence)
             {
-                for (int i = 0; i < block.Length; i++)
+                for (int i = 0; i < block.Length - 1; i++)
                     PRez[j++] = block[i];
             }
+            PRez[j] = smoothSequence.Last().Last();
+
+            textBoxKmin.Text = stat.OrderBy(u => u.СompressionRatio).First().СompressionRatio.ToString();
+            textBoxKmax.Text = stat.OrderByDescending(u => u.СompressionRatio).First().СompressionRatio.ToString();
         }
 
         #endregion
 
         #region Кнопки
-
-        private void buttonOriginalGraph_Click(object sender, EventArgs e)
-        {
-            if (openFile.FileName != String.Empty)
-            {
-                Form OGForm = new OriginalGraph();
-                OGForm.Show(this);
-            }
-            else
-            {
-                MessageBox.Show("Выберите файл");
-            }
-        }
 
         private void buttonSmoothedGraph_Click(object sender, EventArgs e)
         {
@@ -176,6 +193,7 @@ namespace RDPalgorithm
 
         private void buttonOpenFile_Click(object sender, EventArgs e)
         {
+            openFile.Filter = @"текстовые файлы | *.txt";
             if (openFile.ShowDialog(this) == DialogResult.OK)
             {
                 textBoxFilePath.Text = openFile.FileName;

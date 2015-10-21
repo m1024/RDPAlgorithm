@@ -44,12 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OriginalGraph.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OriginalGraph.Designer.cs">
-      <DependentUpon>OriginalGraph.cs</DependentUpon>
-    </Compile>
     <Compile Include="RDPAlgorithm.cs" />
     <Compile Include="RDPForm.cs">
       <SubType>Form</SubType>
@@ -65,9 +59,6 @@
     <Compile Include="SmoothedGraph.Designer.cs">
       <DependentUpon>SmoothedGraph.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="OriginalGraph.resx">
-      <DependentUpon>OriginalGraph.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
