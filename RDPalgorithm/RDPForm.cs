@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -18,6 +17,7 @@ namespace RDPalgorithm
         public ulong Additions { get; set; }
         public ulong Multiplications { get; set; }
         public float СompressionRatio { get; set; }
+        public int RecursiveCalls { get; set; }
     }
 
     public struct CompressMyPoint
@@ -28,7 +28,9 @@ namespace RDPalgorithm
 
     public partial class RDPForm : Form
     {
-        public MyPoint[] PRez;
+        private MyPoint[] PRez;
+        public short[] SequenceSmoothed;
+        public short[] SequenceSourse;
 
         public RDPForm()
         {
@@ -36,6 +38,51 @@ namespace RDPalgorithm
         }
 
         #region Логика
+
+        /// <summary>
+        /// Преобразование сжатой последовательности обратно в обычную
+        /// </summary>
+        private void ConvertSmootedSequence()
+        {
+            SequenceSmoothed = new short[PRez[PRez.Length - 1].X + 1];
+
+            SequenceSmoothed[0] = PRez[0].Y;
+            int n = 1;
+            for (int i = 1; i < PRez.Length && n < SequenceSmoothed.Length; i++)
+            {
+                if (PRez[i].X - PRez[i - 1].X > 1)
+                {
+                    int deltaX = PRez[i].X - PRez[i - 1].X;
+                    int deltaY = PRez[i].Y - PRez[i - 1].Y;
+
+                    for (int j = 1; j < (PRez[i].X - PRez[i - 1].X) && n < SequenceSmoothed.Length; j++)
+                        SequenceSmoothed[n++] = (short) ((double) deltaY/deltaX*j + PRez[i - 1].Y);
+                    SequenceSmoothed[n++] = PRez[i].Y;
+                }
+                else
+                {
+                    SequenceSmoothed[n++] = PRez[i].Y;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Расчет погрешности
+        /// </summary>
+        /// <param name="maxDeviation">Максимальная погрешность</param>
+        /// <param name="averageDeviation">Средняя погрешность</param>
+        public void CalculateDeviation(out int maxDeviation, out float averageDeviation)
+        {
+            maxDeviation = 0;
+            averageDeviation = 0;
+            for (int i = 0; i < SequenceSourse.Length; i++)
+            {
+                if (maxDeviation < Math.Abs(SequenceSourse[i] - SequenceSmoothed[i]))
+                    maxDeviation = Math.Abs(SequenceSourse[i] - SequenceSmoothed[i]);
+                averageDeviation += Math.Abs(SequenceSourse[i] - SequenceSmoothed[i]);
+            }
+            averageDeviation /= SequenceSourse.Length;
+        }
 
         /// <summary>
         /// Конечная последовательность, координата по Х закодирована разностным кодированием,
@@ -57,6 +104,11 @@ namespace RDPalgorithm
             textBoxSmoothedSize.Text = String.Format("{0:0,0}", (newPRrez.Length*3));
             textBoxAdditions.Text = String.Format("{0:0,0}", RDPAlgorithm.Additions);
             textBoxMultiplications.Text = String.Format("{0:0,0}", RDPAlgorithm.Multiplications);
+            int maxDeviation;
+            float averageDeviation;
+            CalculateDeviation(out maxDeviation, out averageDeviation);
+            textBoxAverageDeviation.Text = averageDeviation.ToString();
+            textBoxMaxDeviation.Text = String.Format("{0:0,0}", maxDeviation);
         }
 
         /// <summary>
@@ -98,13 +150,12 @@ namespace RDPalgorithm
             RDPAlgorithm.Additions = 0;
             RDPAlgorithm.Multiplications = 0;
 
-            short[] originalSequence = ReadAndPrepare();
-            MyPoint[] points = new MyPoint[originalSequence.Length];
+            MyPoint[] points = new MyPoint[SequenceSourse.Length];
 
-            for (int i = 0; i < originalSequence.Length; i++)
+            for (int i = 0; i < SequenceSourse.Length; i++)
             {
                 points[i].X = i;
-                points[i].Y = originalSequence[i];
+                points[i].Y = SequenceSourse[i];
             }
 
             int blockSize = int.Parse(textBoxBlockSize.Text);
@@ -117,17 +168,21 @@ namespace RDPalgorithm
             for (int i = 0; i < points.Length; i += blockSize)
             {
                 System.Diagnostics.Stopwatch swatch = new System.Diagnostics.Stopwatch(); // создаем объект
-                Statistic blockStat = new Statistic();
-                blockStat.Additions = RDPAlgorithm.Additions;
-                blockStat.Multiplications = RDPAlgorithm.Multiplications;
+                Statistic blockStat = new Statistic
+                {
+                    Additions = RDPAlgorithm.Additions,
+                    Multiplications = RDPAlgorithm.Multiplications
+                };
+                RDPAlgorithm.MaxCalls = 0;
+                RDPAlgorithm.Calls = 0;
                 swatch.Start(); // старт
 
                 smoothSequence.Add(RDPAlgorithm.DouglasPeucker(points, i,
                     (i + blockSize < points.Length) ? i + blockSize : points.Length - 1,
-                    (textBoxEpsilon.Text == "") ? 1 : float.Parse(textBoxEpsilon.Text)));
+                    (textBoxEpsilon.Text == "") ? 1 : (float) Math.Pow(float.Parse(textBoxEpsilon.Text), 2)));
 
                 smooothSeqLength += smoothSequence.ElementAt(j++).Length - 1;
-                    //-1 чтобы убрать последний элемент, т.к. он будет началом следующего блока
+                //-1 чтобы убрать последний элемент, т.к. он будет началом следующего блока
 
                 swatch.Stop(); // стоп
 
@@ -140,6 +195,7 @@ namespace RDPalgorithm
                 blockStat.Multiplications = RDPAlgorithm.Multiplications - blockStat.Multiplications;
                 blockStat.СompressionRatio =
                     (float) Math.Round(blockSize/(smoothSequence.ElementAt(i/blockSize).Length*1.5), 3);
+                blockStat.RecursiveCalls = RDPAlgorithm.MaxCalls;
 
                 stat.Add(blockStat);
                 progressBar.Value++;
@@ -154,9 +210,10 @@ namespace RDPalgorithm
             dataGridView.Columns[4].HeaderText = @"Слож ений";
             dataGridView.Columns[5].HeaderText = @"Умнож ений";
             dataGridView.Columns[6].HeaderText = @"Коэф. сжатия";
+            dataGridView.Columns[7].HeaderText = @"Рекурсия";
             dataGridView.Columns[0].Width = 100;
             dataGridView.RowHeadersWidth = 60;
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
                 dataGridView.Columns[i].Width = 55;
             for (int i = 0; i < stat.Count; i++)
                 dataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
@@ -172,6 +229,7 @@ namespace RDPalgorithm
 
             textBoxKmin.Text = stat.OrderBy(u => u.СompressionRatio).First().СompressionRatio.ToString();
             textBoxKmax.Text = stat.OrderByDescending(u => u.СompressionRatio).First().СompressionRatio.ToString();
+            textBoxRecursiveCalls.Text = stat.OrderByDescending(u => u.RecursiveCalls).First().RecursiveCalls.ToString();
         }
 
         #endregion
@@ -180,14 +238,14 @@ namespace RDPalgorithm
 
         private void buttonSmoothedGraph_Click(object sender, EventArgs e)
         {
-            if (openFile.FileName != String.Empty)
+            if (SequenceSourse != null || SequenceSmoothed != null)
             {
-                Form SGForm = new SmoothedGraph();
-                SGForm.Show(this);
+                Form gForm = new Graph();
+                gForm.Show(this);
             }
             else
             {
-                MessageBox.Show("Выберите файл");
+                MessageBox.Show(@"Последовательности не сформированы. Нажмите кнопку Преобразовать.");
             }
         }
 
@@ -204,7 +262,9 @@ namespace RDPalgorithm
         {
             try
             {
+                SequenceSourse = ReadAndPrepare();
                 Convert();
+                ConvertSmootedSequence();
                 CompressRezult();
             }
             catch (Exception ex)

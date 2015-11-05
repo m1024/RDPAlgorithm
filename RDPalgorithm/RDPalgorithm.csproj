@@ -53,12 +53,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmoothedGraph.cs">
+    <Compile Include="Graph.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SmoothedGraph.Designer.cs">
-      <DependentUpon>SmoothedGraph.cs</DependentUpon>
+    <Compile Include="Graph.Designer.cs">
+      <DependentUpon>Graph.cs</DependentUpon>
     </Compile>
+    <Compile Include="Spectrum.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -71,8 +72,8 @@
     <EmbeddedResource Include="RDPForm.resx">
       <DependentUpon>RDPForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SmoothedGraph.resx">
-      <DependentUpon>SmoothedGraph.cs</DependentUpon>
+    <EmbeddedResource Include="Graph.resx">
+      <DependentUpon>Graph.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

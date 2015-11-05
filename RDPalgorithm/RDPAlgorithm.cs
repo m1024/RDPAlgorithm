@@ -10,6 +10,8 @@
     {
         public static ulong Multiplications { get; set; }
         public static ulong Additions { get; set; }
+        public static int Calls { get; set; }
+        public static int MaxCalls { get; set; }
 
         /// <summary>
         /// Функция рассчета расстояния от точки до прямой, задаваемой двумя точками
@@ -42,8 +44,8 @@
             int index = 0;
             for (int i = 1; i < endInd - startInd; i++)
             {
-                Multiplications += 2; //умножение на long как-то иначе учитывать?
-                Additions += 3;
+                Multiplications += 2;
+                Additions += 2;
 
                 int numerator, denominator;
                 PerpendicularDistance(pointList[i + startInd], pointList[startInd], pointList[endInd],
@@ -62,22 +64,28 @@
             //Если максимальная дистанция больше, чем epsilon, то рекурсивно вызываем её на участках
             if (numeratorMax >= epsilon*denominatorMax)
             {
+                Calls++;
+                if (Calls > MaxCalls)
+                    MaxCalls = Calls;
                 MyPoint[] recResults1 = DouglasPeucker(pointList, startInd, index, epsilon);
+                Calls--;
+
+                Calls++;
+                if (Calls > MaxCalls)
+                    MaxCalls = Calls;
                 MyPoint[] recResults2 = DouglasPeucker(pointList, index, endInd, epsilon);
+                Calls --;
 
                 Additions += 2;
                 MyPoint[] result = new MyPoint[recResults1.Length + recResults2.Length - 1];
 
                 for (int i = 0; i < recResults1.Length; i++)
-                {
                     result[i] = recResults1[i];
-                    Additions++;
-                }
 
                 for (int i = 1; i < recResults2.Length; i++)
                 {
                     result[i + recResults1.Length - 1] = recResults2[i];
-                    Additions += 3;
+                    Additions += 2;
                 }
 
                 return result;
@@ -97,7 +105,7 @@
                     {
                         length += 255;
                         k++;
-                        Additions += 2;
+                        Additions++;
                     }
                     //ну или с делением:
                     //int k = (pointList[endInd].X - pointList[startInd].X)/255 + 1;
@@ -106,7 +114,7 @@
                     for (int i = 0; i < k; i++)
                     {
                         resultR[i] = pointList[startInd + i*255];
-                        Additions += 2;
+                        Additions ++;
                         Multiplications++;
                     }
                     resultR[k] = pointList[endInd];

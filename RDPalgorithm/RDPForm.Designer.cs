@@ -51,6 +51,12 @@
             this.label8 = new System.Windows.Forms.Label();
             this.textBoxKmax = new System.Windows.Forms.TextBox();
             this.textBoxKmin = new System.Windows.Forms.TextBox();
+            this.textBoxAverageDeviation = new System.Windows.Forms.TextBox();
+            this.textBoxMaxDeviation = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxRecursiveCalls = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,7 +98,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 141);
+            this.label2.Location = new System.Drawing.Point(12, 139);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(210, 13);
             this.label2.TabIndex = 4;
@@ -100,7 +106,7 @@
             // 
             // textBoxSmoothedSize
             // 
-            this.textBoxSmoothedSize.Location = new System.Drawing.Point(246, 138);
+            this.textBoxSmoothedSize.Location = new System.Drawing.Point(246, 136);
             this.textBoxSmoothedSize.Name = "textBoxSmoothedSize";
             this.textBoxSmoothedSize.ReadOnly = true;
             this.textBoxSmoothedSize.Size = new System.Drawing.Size(100, 20);
@@ -121,7 +127,7 @@
             this.textBoxEpsilon.Name = "textBoxEpsilon";
             this.textBoxEpsilon.Size = new System.Drawing.Size(52, 20);
             this.textBoxEpsilon.TabIndex = 9;
-            this.textBoxEpsilon.Text = "4";
+            this.textBoxEpsilon.Text = "2";
             // 
             // label5
             // 
@@ -142,7 +148,7 @@
             // 
             // buttonConvert
             // 
-            this.buttonConvert.Location = new System.Drawing.Point(15, 351);
+            this.buttonConvert.Location = new System.Drawing.Point(15, 412);
             this.buttonConvert.Name = "buttonConvert";
             this.buttonConvert.Size = new System.Drawing.Size(161, 30);
             this.buttonConvert.TabIndex = 13;
@@ -152,7 +158,7 @@
             // 
             // buttonSmoothedGraph
             // 
-            this.buttonSmoothedGraph.Location = new System.Drawing.Point(185, 351);
+            this.buttonSmoothedGraph.Location = new System.Drawing.Point(185, 412);
             this.buttonSmoothedGraph.Name = "buttonSmoothedGraph";
             this.buttonSmoothedGraph.Size = new System.Drawing.Size(161, 30);
             this.buttonSmoothedGraph.TabIndex = 15;
@@ -166,12 +172,12 @@
             this.dataGridView.Location = new System.Drawing.Point(370, 17);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
-            this.dataGridView.Size = new System.Drawing.Size(513, 372);
+            this.dataGridView.Size = new System.Drawing.Size(565, 425);
             this.dataGridView.TabIndex = 16;
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(15, 318);
+            this.progressBar.Location = new System.Drawing.Point(15, 383);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(331, 20);
             this.progressBar.TabIndex = 17;
@@ -179,7 +185,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 237);
+            this.label3.Location = new System.Drawing.Point(12, 229);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 13);
             this.label3.TabIndex = 18;
@@ -188,7 +194,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 270);
+            this.label6.Location = new System.Drawing.Point(12, 259);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(117, 13);
             this.label6.TabIndex = 19;
@@ -196,7 +202,7 @@
             // 
             // textBoxAdditions
             // 
-            this.textBoxAdditions.Location = new System.Drawing.Point(246, 234);
+            this.textBoxAdditions.Location = new System.Drawing.Point(246, 226);
             this.textBoxAdditions.Name = "textBoxAdditions";
             this.textBoxAdditions.ReadOnly = true;
             this.textBoxAdditions.Size = new System.Drawing.Size(100, 20);
@@ -204,7 +210,7 @@
             // 
             // textBoxMultiplications
             // 
-            this.textBoxMultiplications.Location = new System.Drawing.Point(246, 267);
+            this.textBoxMultiplications.Location = new System.Drawing.Point(246, 256);
             this.textBoxMultiplications.Name = "textBoxMultiplications";
             this.textBoxMultiplications.ReadOnly = true;
             this.textBoxMultiplications.Size = new System.Drawing.Size(100, 20);
@@ -213,7 +219,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 173);
+            this.label7.Location = new System.Drawing.Point(12, 169);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(139, 13);
             this.label7.TabIndex = 22;
@@ -222,7 +228,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 205);
+            this.label8.Location = new System.Drawing.Point(12, 199);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(142, 13);
             this.label8.TabIndex = 23;
@@ -230,7 +236,7 @@
             // 
             // textBoxKmax
             // 
-            this.textBoxKmax.Location = new System.Drawing.Point(246, 202);
+            this.textBoxKmax.Location = new System.Drawing.Point(246, 196);
             this.textBoxKmax.Name = "textBoxKmax";
             this.textBoxKmax.ReadOnly = true;
             this.textBoxKmax.Size = new System.Drawing.Size(100, 20);
@@ -238,17 +244,74 @@
             // 
             // textBoxKmin
             // 
-            this.textBoxKmin.Location = new System.Drawing.Point(246, 170);
+            this.textBoxKmin.Location = new System.Drawing.Point(246, 166);
             this.textBoxKmin.Name = "textBoxKmin";
             this.textBoxKmin.ReadOnly = true;
             this.textBoxKmin.Size = new System.Drawing.Size(100, 20);
             this.textBoxKmin.TabIndex = 24;
             // 
+            // textBoxAverageDeviation
+            // 
+            this.textBoxAverageDeviation.Location = new System.Drawing.Point(246, 316);
+            this.textBoxAverageDeviation.Name = "textBoxAverageDeviation";
+            this.textBoxAverageDeviation.ReadOnly = true;
+            this.textBoxAverageDeviation.Size = new System.Drawing.Size(100, 20);
+            this.textBoxAverageDeviation.TabIndex = 29;
+            // 
+            // textBoxMaxDeviation
+            // 
+            this.textBoxMaxDeviation.Location = new System.Drawing.Point(246, 286);
+            this.textBoxMaxDeviation.Name = "textBoxMaxDeviation";
+            this.textBoxMaxDeviation.ReadOnly = true;
+            this.textBoxMaxDeviation.Size = new System.Drawing.Size(100, 20);
+            this.textBoxMaxDeviation.TabIndex = 28;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 319);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(123, 13);
+            this.label9.TabIndex = 27;
+            this.label9.Text = "Погрешность, среднее";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 289);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(157, 13);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "Погрешность, максимальная";
+            // 
+            // textBoxRecursiveCalls
+            // 
+            this.textBoxRecursiveCalls.Location = new System.Drawing.Point(246, 346);
+            this.textBoxRecursiveCalls.Name = "textBoxRecursiveCalls";
+            this.textBoxRecursiveCalls.ReadOnly = true;
+            this.textBoxRecursiveCalls.Size = new System.Drawing.Size(100, 20);
+            this.textBoxRecursiveCalls.TabIndex = 31;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 349);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(123, 13);
+            this.label11.TabIndex = 30;
+            this.label11.Text = "Глубина рекурсии, max";
+            // 
             // RDPForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(895, 398);
+            this.ClientSize = new System.Drawing.Size(947, 456);
+            this.Controls.Add(this.textBoxRecursiveCalls);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.textBoxAverageDeviation);
+            this.Controls.Add(this.textBoxMaxDeviation);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.textBoxKmax);
             this.Controls.Add(this.textBoxKmin);
             this.Controls.Add(this.label8);
@@ -305,6 +368,12 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBoxKmax;
         private System.Windows.Forms.TextBox textBoxKmin;
+        private System.Windows.Forms.TextBox textBoxAverageDeviation;
+        private System.Windows.Forms.TextBox textBoxMaxDeviation;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBoxRecursiveCalls;
+        private System.Windows.Forms.Label label11;
     }
 }
 
