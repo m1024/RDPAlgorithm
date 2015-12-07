@@ -198,6 +198,36 @@ namespace RDPalgorithm
                         DrawSpectrum(e, spectrumSourse = CalculateSpectrum(ownerForm.SequenceSourse), Color.Blue);
                     }
                 }
+                else if (radioButton8.Checked)
+                {
+                    var ownerForm = (RDPForm) this.Owner;
+                    BeginGraph = (ownerForm.MaxDeviationInd > 600) ? ownerForm.MaxDeviationInd - 600 : 0;
+                    DrawLine(new Point(ownerForm.MaxDeviationInd - BeginGraph - 10, panel.Bottom - 20),
+                        new Point(ownerForm.MaxDeviationInd - BeginGraph - 10, panel.Top + 20), e, Color.Gray);
+                    DrawLine(new Point(ownerForm.MaxDeviationInd - BeginGraph + 10, panel.Bottom - 20),
+                        new Point(ownerForm.MaxDeviationInd - BeginGraph + 10, panel.Top + 20), e, Color.Gray);
+                    DrawLine(new Point(ownerForm.MaxDeviationInd - BeginGraph + 10, panel.Bottom - 20),
+                        new Point(ownerForm.MaxDeviationInd - BeginGraph - 10, panel.Bottom - 20), e, Color.Gray);
+                    DrawLine(new Point(ownerForm.MaxDeviationInd - BeginGraph - 10, panel.Top + 20),
+                        new Point(ownerForm.MaxDeviationInd - BeginGraph + 10, panel.Top + 20), e, Color.Gray);
+                    DrawOriginal(e, panel.Height, 0);
+                    DrawSmoothed(e, panel.Height, 0);
+                }
+                else if (radioButton9.Checked)
+                {
+                    var ownerForm = (RDPForm) this.Owner;
+                    BeginGraph = ownerForm.MinDeviationInd;
+                    DrawLine(new Point(ownerForm.MaxDeviationInd - BeginGraph - 10, panel.Bottom - 20),
+                        new Point(ownerForm.MaxDeviationInd - BeginGraph - 10, panel.Top + 20), e, Color.Gray);
+                    DrawLine(new Point(ownerForm.MaxDeviationInd - BeginGraph + 10, panel.Bottom - 20),
+                        new Point(ownerForm.MaxDeviationInd - BeginGraph + 10, panel.Top + 20), e, Color.Gray);
+                    DrawLine(new Point(ownerForm.MaxDeviationInd - BeginGraph + 10, panel.Bottom - 20),
+                        new Point(ownerForm.MaxDeviationInd - BeginGraph - 10, panel.Bottom - 20), e, Color.Gray);
+                    DrawLine(new Point(ownerForm.MaxDeviationInd - BeginGraph - 10, panel.Top + 20),
+                        new Point(ownerForm.MaxDeviationInd - BeginGraph + 10, panel.Top + 20), e, Color.Gray);
+                    DrawOriginal(e, panel.Height, 0);
+                    DrawSmoothed(e, panel.Height, 0);
+                }
             }
             catch (Exception ex)
             {
@@ -207,12 +237,18 @@ namespace RDPalgorithm
 
         private void buttonPrevious_Click(object sender, EventArgs e)
         {
+            if (radioButton8.Checked || radioButton9.Checked)
+                radioButton1.Checked = true;
+
             BeginGraph -= panel.Width;
             panel.Refresh();
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
+            if (radioButton8.Checked || radioButton9.Checked)
+                radioButton1.Checked = true;
+
             BeginGraph += panel.Width;
             panel.Refresh();
         }

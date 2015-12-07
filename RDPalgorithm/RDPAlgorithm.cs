@@ -2,7 +2,7 @@
 {
     public struct MyPoint
     {
-        public int X { get; set; }
+        public long X { get; set; }
         public short Y { get; set; }
     }
 
@@ -16,15 +16,15 @@
         /// <summary>
         /// Функция рассчета расстояния от точки до прямой, задаваемой двумя точками
         /// </summary>
-        private static void PerpendicularDistance(MyPoint point, MyPoint start, MyPoint end, out int numerator,
-            out int denominator)
+        private static void PerpendicularDistance(MyPoint point, MyPoint start, MyPoint end, out long numerator,
+            out long denominator)
         {
             Multiplications += 5;
             Additions += 6;
 
-            int deltaX = end.X - start.X;
-            int deltaY = end.Y - start.Y;
-            int num = deltaX*(start.Y - point.Y) - (start.X - point.X)*deltaY;
+            var deltaX = end.X - start.X;
+            var deltaY = end.Y - start.Y;
+            var num = deltaX*(start.Y - point.Y) - (start.X - point.X)*deltaY;
             numerator = num*num;
             denominator = deltaX*deltaX + deltaY*deltaY;
         }
@@ -40,18 +40,18 @@
         public static MyPoint[] DouglasPeucker(MyPoint[] pointList, int startInd, int endInd, float epsilon)
         {
             //Находим точку с максимальным расстоянием от прямой между первой и последней точками набора
-            int numeratorMax = 0, denominatorMax = 1;
-            int index = 0;
+            long numeratorMax = 0, denominatorMax = 1;
+            var index = 0;
             for (int i = 1; i < endInd - startInd; i++)
             {
                 Multiplications += 2;
                 Additions += 2;
 
-                int numerator, denominator;
+                long numerator, denominator;
                 PerpendicularDistance(pointList[i + startInd], pointList[startInd], pointList[endInd],
                     out numerator, out denominator);
 
-                if (((long) numerator*denominatorMax) > ((long) denominator*numeratorMax))
+                if ((numerator*denominatorMax) > (denominator*numeratorMax))
                 {
                     Additions++;
                     index = i + startInd;
@@ -99,7 +99,7 @@
                     Additions += 2;
 
                     int length = 0;
-                    int deltaX = pointList[endInd].X - pointList[startInd].X;
+                    var deltaX = pointList[endInd].X - pointList[startInd].X;
                     int k = 0;
                     while (length < deltaX)
                     {

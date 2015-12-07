@@ -31,6 +31,8 @@ namespace RDPalgorithm
         private MyPoint[] PRez;
         public short[] SequenceSmoothed;
         public short[] SequenceSourse;
+        public int MaxDeviationInd;
+        public int MinDeviationInd;
 
         public RDPForm()
         {
@@ -47,13 +49,13 @@ namespace RDPalgorithm
             SequenceSmoothed = new short[PRez[PRez.Length - 1].X + 1];
 
             SequenceSmoothed[0] = PRez[0].Y;
-            int n = 1;
+            var n = 1;
             for (int i = 1; i < PRez.Length && n < SequenceSmoothed.Length; i++)
             {
                 if (PRez[i].X - PRez[i - 1].X > 1)
                 {
-                    int deltaX = PRez[i].X - PRez[i - 1].X;
-                    int deltaY = PRez[i].Y - PRez[i - 1].Y;
+                    var deltaX = PRez[i].X - PRez[i - 1].X;
+                    var deltaY = PRez[i].Y - PRez[i - 1].Y;
 
                     for (int j = 1; j < (PRez[i].X - PRez[i - 1].X) && n < SequenceSmoothed.Length; j++)
                         SequenceSmoothed[n++] = (short) ((double) deltaY/deltaX*j + PRez[i - 1].Y);
@@ -75,12 +77,29 @@ namespace RDPalgorithm
         {
             maxDeviation = 0;
             averageDeviation = 0;
-            for (int i = 0; i < SequenceSourse.Length; i++)
+            float averageMinDeviation = float.MaxValue;
+            int interval = 1200; //интервал на котором будем искать среднее наименьшее отклонение
+
+            for (int i = 0; i < SequenceSourse.Length; i += 500)
             {
-                if (maxDeviation < Math.Abs(SequenceSourse[i] - SequenceSmoothed[i]))
-                    maxDeviation = Math.Abs(SequenceSourse[i] - SequenceSmoothed[i]);
-                averageDeviation += Math.Abs(SequenceSourse[i] - SequenceSmoothed[i]);
+                int minDeviation = 0;
+                int j;
+                for (j = 0; j < interval && i + j < SequenceSourse.Length; j++)
+                {
+                    minDeviation += Math.Abs(SequenceSourse[i + j] - SequenceSmoothed[i + j]);
+
+                    if (maxDeviation < Math.Abs(SequenceSourse[i + j] - SequenceSmoothed[i + j]))
+                    {
+                        maxDeviation = Math.Abs(SequenceSourse[i + j] - SequenceSmoothed[i + j]);
+                        MaxDeviationInd = i + j;
+                    }
+                    averageDeviation += Math.Abs(SequenceSourse[i + j] - SequenceSmoothed[i + j]);
+                }
+                if (!((float) minDeviation/j < averageMinDeviation)) continue;
+                averageMinDeviation = (float) minDeviation/j;
+                MinDeviationInd = i;
             }
+
             averageDeviation /= SequenceSourse.Length;
         }
 
@@ -107,7 +126,7 @@ namespace RDPalgorithm
             int maxDeviation;
             float averageDeviation;
             CalculateDeviation(out maxDeviation, out averageDeviation);
-            textBoxAverageDeviation.Text = averageDeviation.ToString();
+            textBoxAverageDeviation.Text =  averageDeviation.ToString();
             textBoxMaxDeviation.Text = String.Format("{0:0,0}", maxDeviation);
         }
 
